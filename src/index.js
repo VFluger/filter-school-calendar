@@ -21,23 +21,24 @@ const filterCalendar = async (query) => {
 	//setting correct regexes
 	if (query.aj) {
 		if (query.aj[0] == 1) {
-			englishRegex = /1.?aj1/i;
+			englishRegex = /2.?aj1/i;
 		} else if (query.aj[0] == 2) {
-			englishRegex = /1.?aj2/i;
+			englishRegex = /2.?aj2/i;
 		} else if (query.aj[0] == 3) {
-			englishRegex = /1.?aj3/i;
+			englishRegex = /2.?aj3/i;
 		}
 	}
 	if (query.nj) {
 		if (query.nj[0] == 1) {
-			germanRegex = /1.?nj1/i;
+			germanRegex = /2.?nj1/i;
 		} else if (query.nj[0] == 2) {
-			germanRegex = /1.?nj2/i;
+			germanRegex = /2.?nj2/i;
 		} else if (query.nj[0] == 3) {
-			germanRegex = /1.?nj3/i;
+			germanRegex = /2.?nj3/i;
 		}
 	}
-	const mainRegex = /1.?[^d]a[^j]/i;
+	const mainRegex = /2.?a[^j]/i;
+	const catchingRegex = /3.r|3d|1da|mvk3/i;
 
 	//output calendar array
 	const validEventsArr = [];
@@ -64,7 +65,7 @@ const filterCalendar = async (query) => {
 
 			//testing all regexes
 			if (mainRegex) {
-				if (mainRegex.test(eventObj.description.replace(' ', ''))) {
+				if (mainRegex.test(eventObj.description.replace(' ', '')) && !catchingRegex.test(eventObj.description.replace(' ', ''))) {
 					validEventsArr.push(outputObj);
 					continue;
 				}
@@ -324,8 +325,8 @@ footer a {
 			<h1 class="text-center my-3">2.A Školní Kalendář</h1>
 			<p class="h5 desc text-center mb-4">Kalendář s testy pro třídu 2.A, různé verze pro všechny skupiny.</p>
 			<p class="desc info-text text-center">
-				Filtr má vysokou účinost, ale může něco vynechat. Doporučujeme požádat učitele, aby testy do classisu zapisoval přesně tak, jak je
-				napsaná skupina (2.A, 2aj2, 2nj1). Pokud zaznamenáte, že chybí nějaký test, kontaktujte nás.
+				Filtr má vysokou účinost, ale může něco vynechat. Doporučuji požádat učitele, aby testy do classisu zapisoval přesně tak, jak je
+				napsaná skupina (2.A, 2aj2, 2nj1). Pokud zaznamenáte, že chybí nějaký test, hoď mi DM.
 			</p>
 			<h2 class="text-center mt-4">Jak na to?</h2>
 			<ol class="mb-5">
