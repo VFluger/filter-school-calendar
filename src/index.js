@@ -251,7 +251,7 @@ footer a {
 		<script>
 		$(document).ready(() => {
 	const showUrl = (queries, showAll = false) => {
-		const baseUrl = 'webcal://filter-school-calendar.vojtech-fluger.workers.dev';
+		const baseUrl = 'webcal://cgnr-kalendar-2a.vojtech-fluger.workers.dev';
 		if (showAll) {
 			return baseUrl + '/spolecne';
 		}
@@ -369,7 +369,7 @@ footer a {
 			</div>
 		</div>
 		<footer class="d-grid justify-content-center text-center">
-			<a href="https://github.com/BestCactus/filter-school-calendar"><i class="fa fa-github fa-xl"></i> Github</a>
+			<a href="https://github.com/VFluger/filter-school-calendar"><i class="fa fa-github fa-xl"></i> Github</a>
 		</footer>
 		<div class="blur-circle"></div>
 	</body>
