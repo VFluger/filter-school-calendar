@@ -4,36 +4,31 @@ import { Hono } from 'hono';
 
 const app = new Hono();
 
-const filterCalendar = async (query) => {
-	// Fetch calendar from school website
-	const resp = await fetch('https://classis.cgnr.cz/calendar/982ed8baf0bb7d245220884c43b8378c&noCache');
-	console.log('STATUS:', resp.status);
-	if (!resp.ok) {
-		throw new Error('Error fetching calendar', resp.status);
-	}
-	//parse data
-	const data = await resp.text();
+const filterCalendar = async (googleData) => {
+	const data = googleData.calData;
 	const importedCalendar = ical.parseICS(data);
 
 	const currDate = new Date();
 	let englishRegex;
 	let germanRegex;
 	//setting correct regexes
-	if (query.aj) {
-		if (query.aj[0] == 1) {
+	const ajQuery = googleData.aj;
+	const njQuery = googleData.nj;
+	if (ajQuery) {
+		if (ajQuery == 1) {
 			englishRegex = /2.?aj1/i;
-		} else if (query.aj[0] == 2) {
+		} else if (ajQuery == 2) {
 			englishRegex = /2.?aj2/i;
-		} else if (query.aj[0] == 3) {
+		} else if (ajQuery == 3) {
 			englishRegex = /2.?aj3/i;
 		}
 	}
-	if (query.nj) {
-		if (query.nj[0] == 1) {
+	if (njQuery) {
+		if (njQuery == 1) {
 			germanRegex = /2.?nj1/i;
-		} else if (query.nj[0] == 2) {
+		} else if (njQuery == 2) {
 			germanRegex = /2.?nj2/i;
-		} else if (query.nj[0] == 3) {
+		} else if (njQuery == 3) {
 			germanRegex = /2.?nj3/i;
 		}
 	}
@@ -251,7 +246,7 @@ footer a {
 		<script>
 		$(document).ready(() => {
 	const showUrl = (queries, showAll = false) => {
-		const baseUrl = 'webcal://cgnr-kalendar-2a.vojtech-fluger.workers.dev';
+		const baseUrl = 'webcal://script.google.com/macros/s/AKfycbxFdjZNH-lYRNzsUNG8kIx5Gx2AhA7jbab7pMS_Ap9UJ_k47yV2KgcSjTtnXbgj_AYn/exec';
 		if (showAll) {
 			return baseUrl + '/spolecne';
 		}
@@ -392,4 +387,8 @@ app.get('/spolecne', async (c) => {
 	return c.text(await filterCalendar(c.req.queries()));
 });
 
+app.post('/test', async (c) => {
+	const data = await c.req.json();
+	return c.text(await filterCalendar(data));
+});
 export default app;
